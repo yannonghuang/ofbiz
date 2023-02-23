@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.sf.barcode4j</groupId>
+  <artifactId>barcode4j-fop-ext</artifactId>
+  <name>Barcode4J extensions for Apache FOP 0.93 and later</name>
+  <version>2.1</version>
+  <url>http://barcode4j.sourceforge.net/</url>
+  <description>Barcode4J is a flexible generator for barcodes written in Java.</description>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <url>http://barcode4j.cvs.sourceforge.net/barcode4j</url>
+    <connection>scm:cvs:pserver:anonymous@barcode4j.cvs.sourceforge.net:/cvsroot/barcode4j:barcode4j</connection>
+  </scm>
+  <developers>
+    <developer>
+      <id>jmaerki</id>
+      <name>Jeremias Märki</name>
+      <email>jmaerki@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <id>the_webmaestro</id>
+      <name>Web Maestro Clay Leeds</name>
+      <email>the_webmaestro@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <id>nicolaken</id>
+      <name>Nicola Ken Barozzi</name>
+      <email>nicolaken@krysalis.org</email>
+    </developer>
+    <developer>
+      <id>buerkle</id>
+      <name>Dietmar Bürkle</name>
+      <email>buerkle@users.sourceforge.net</email>
+    </developer>
+  </developers>
+  <dependencies>
+    <dependency>
+      <groupId>net.sf.barcode4j</groupId>
+      <artifactId>barcode4j</artifactId>
+      <version>2.1</version>
+    </dependency>
+	<dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>fop</artifactId>
+	  <version>0.95</version>
+	</dependency>
+  </dependencies>
+</project>

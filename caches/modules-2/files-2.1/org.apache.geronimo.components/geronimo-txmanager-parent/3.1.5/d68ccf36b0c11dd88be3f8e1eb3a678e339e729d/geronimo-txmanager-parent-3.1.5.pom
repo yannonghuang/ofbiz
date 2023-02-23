@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<!-- $Rev$ $Date$ -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.apache.geronimo.genesis</groupId>
+        <artifactId>genesis-java8-flava</artifactId>
+        <version>2.4</version>
+        <relativePath />
+    </parent>
+
+    <groupId>org.apache.geronimo.components</groupId>
+    <artifactId>geronimo-txmanager-parent</artifactId>
+    <version>3.1.5</version>
+    <packaging>pom</packaging>
+    <name>Apache Geronimo TxManager</name>
+
+    <description>Geronimo Transaction Manager</description>
+
+    <scm>
+        <connection>scm:git:https://gitbox.apache.org/repos/asf/geronimo-txmanager.git</connection>
+        <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/geronimo-txmanager.git</developerConnection>
+        <url>https://gitbox.apache.org/repos/asf/geronimo-txmanager.git</url>
+        <tag>geronimo-txmanager-parent-3.1.5</tag>
+    </scm>
+
+    <url>http://geronimo.apache.org/maven/${siteId}/${project.version}</url>
+    <properties>
+        <siteId>components/${project.artifactId}</siteId>
+
+        <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+        <build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
+
+        <!-- Package attribute of the JAR artifact. -->
+        <jpms.module.name>${package-guess}</jpms.module.name>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- internal -->
+
+            <dependency>
+                <groupId>org.apache.geronimo.components</groupId>
+                <artifactId>geronimo-transaction</artifactId>
+                <version>3.1.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.geronimo.components</groupId>
+                <artifactId>geronimo-connector</artifactId>
+                <version>3.1.5</version>
+            </dependency>
+
+            <!-- external -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.5.5</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.5.5</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-jta_1.1_spec</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-j2ee-connector_1.6_spec</artifactId>
+                <version>1.0</version>
+            </dependency>
+                
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-validation_1.0_spec</artifactId>
+                <version>1.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.objectweb.howl</groupId>
+                <artifactId>howl</artifactId>
+                <version>1.0.1-1</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>3.8.2</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>java8-doclint-disabled</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+
+            <properties>
+                <additionalparam>-Xdoclint:none</additionalparam>
+                <javadoc.opts>-Xdoclint:none</javadoc.opts>
+            </properties>
+        </profile>
+    </profiles>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                            <configuration>
+                                <additionalparam>${javadoc.opts}</additionalparam>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>2.0.1</version>
+                    <configuration>
+                        <instructions>
+                            <_versionpolicy-impl>[$(version;==;$(@)),$(version;=+;$(@)))</_versionpolicy-impl>
+                            <_versionpolicy-uses>[$(version;==;$(@)),$(version;+;$(@)))</_versionpolicy-uses>
+                            <_versionpolicy>[$(version;==;$(@)),$(version;+;$(@)))</_versionpolicy>
+                        </instructions>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>${maven-shade-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <configuration>
+                                <shadedArtifactAttached>true</shadedArtifactAttached>
+                                <shadedClassifierName>jakarta</shadedClassifierName>
+                                <createDependencyReducedPom>false</createDependencyReducedPom>
+                                <transformers>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                                </transformers>
+                                <artifactSet> <!-- don't include transitive deps -->
+                                    <includes>
+                                        <include>${project.groupId}:${project.artifactId}</include>
+                                    </includes>
+                                </artifactSet>
+                                <relocations>
+                                    <relocation>
+                                        <pattern>javax.resource</pattern>
+                                        <shadedPattern>jakarta.resource</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>javax.transaction</pattern>
+                                        <shadedPattern>jakarta.transaction</shadedPattern>
+                                        <excludes>
+                                            <exclude>javax.transaction.xa.**</exclude>
+                                        </excludes>
+                                    </relocation>
+
+                                    <relocation>
+                                        <pattern>javax.validation</pattern>
+                                        <shadedPattern>jakarta.validation</shadedPattern>
+                                    </relocation>
+                                </relocations>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!--
+                Build Helper Maven plugin -
+                https://www.mojohaus.org/build-helper-maven-plugin/
+                -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven-plugin.version}</version>
+                    <executions>
+                        <!--
+                        Make a guess at a reasonable & legal package prefix. This value
+                        is used for package-name and automatic-module-name by default.
+                        -->
+                        <execution>
+                            <id>guess-package</id>
+                            <goals>
+                                <goal>regex-property</goal>
+                            </goals>
+                            <configuration>
+                                <name>package-guess</name>
+                                <value>${project.groupId}.${project.artifactId}</value>
+                                <regex>[^a-z0-9_.]+</regex>
+                                <replacement>_</replacement>
+                                <failIfNoMatch>false</failIfNoMatch>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <modules>
+        <module>geronimo-transaction</module>
+        <module>geronimo-connector</module>
+    </modules>
+
+</project>
+

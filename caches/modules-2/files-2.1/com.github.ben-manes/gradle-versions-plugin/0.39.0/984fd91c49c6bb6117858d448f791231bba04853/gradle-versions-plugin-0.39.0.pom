@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.github.ben-manes</groupId>
+  <artifactId>gradle-versions-plugin</artifactId>
+  <version>0.39.0</version>
+  <name>Gradle Versions plugin</name>
+  <description>Gradle plugin that provides tasks for discovering dependency updates.</description>
+  <url>https://github.com/ben-manes/gradle-versions-plugin</url>
+  <inceptionYear>2012</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>ben-manes</id>
+      <name>Ben Manes</name>
+      <email>ben.manes@gmail.com</email>
+    </developer>
+    <developer>
+      <id>zenedith</id>
+      <name>Zenedith</name>
+      <email>zenedith@wp.pl</email>
+    </developer>
+    <developer>
+      <id>jochenberger</id>
+      <name>Jochen Berger</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:https://ben-manes@github.com/ben-manes/gradle-versions-plugin.git</connection>
+    <developerConnection>scm:git://github.com/ben-manes/gradle-versions-plugin.git</developerConnection>
+    <url>https://github.com/ben-manes/gradle-versions-plugin</url>
+  </scm>
+  <issueManagement>
+    <system>github</system>
+    <url>https://github.com/ben-manes/gradle-versions-plugin/issues</url>
+  </issueManagement>
+  <dependencies>
+    <dependency>
+      <groupId>com.thoughtworks.xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.4.17</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+</project>

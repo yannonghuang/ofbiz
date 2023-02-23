@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.fortuna.ical4j</groupId>
+	<artifactId>ical4j</artifactId>
+	<packaging>bundle</packaging>
+	<name>iCal4j</name>
+    <version>1.0-rc4-atlassian-12</version>
+    <description>
+		A Java library for reading and writing iCalendar (*.ics) files
+	</description>
+	<url>http://ical4j.sourceforge.net</url>
+
+	<issueManagement>
+		<system>SourceForge.net</system>
+		<url>https://sourceforge.net/tracker/?group_id=107024</url>
+	</issueManagement>
+	<inceptionYear>2004</inceptionYear>
+	<licenses>
+		<license>
+			<name>iCal4j - License</name>
+			<url>LICENSE</url>
+		</license>
+	</licenses>
+
+    <scm>
+        <connection>scm:git:ssh://git@bitbucket.org/atlassian/atlassian-atlassian-ical4j.git</connection>
+        <developerConnection>scm:git:ssh://git@bitbucket.org/atlassian/atlassian-atlassian-ical4j.git</developerConnection>
+      	<tag>ical4j-1.0-rc4-atlassian-12</tag>
+  	</scm>
+
+	<properties>
+		<java.version>8</java.version>
+	</properties>
+
+	<contributors>
+		<contributor>
+			<name>Mike Douglass</name>
+			<organization>
+				Rensselaer Polytechnic Institute
+			</organization>
+			<organizationUrl>http://www.rpi.edu</organizationUrl>
+		</contributor>
+		<contributor>
+			<name>Randy Letness</name>
+			<organization>
+				Open Source Applications Foundation
+			</organization>
+			<organizationUrl>
+				http://www.osafoundation.org
+			</organizationUrl>
+		</contributor>
+	</contributors>
+
+    <distributionManagement>
+        <repository>
+            <id>atlassian-3rdparty</id>
+            <url>https://packages.atlassian.com/maven/3rdparty</url>
+        </repository>
+    </distributionManagement>
+
+	<build>
+		<sourceDirectory>source</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>source</directory>
+				<includes>
+					<include>**/tz.alias</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>etc</directory>
+				<includes>
+					<include>zoneinfo/**</include>
+				</includes>
+				<excludes>
+					<exclude>zoneinfo/zones.h</exclude>
+					<exclude>zoneinfo/zones.tab</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<testSourceDirectory>test</testSourceDirectory>
+		<testResources>
+			<testResource>
+				<directory>test</directory>
+				<includes>
+					<include>log4j.properties</include>
+				</includes>
+			</testResource>
+		</testResources>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<testExcludes>
+						<exclude>**/RegexTestHarness.java</exclude>
+					</testExcludes>
+				</configuration>
+			</plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <!-- When using atlassian-public-pom as parent POM we need this configuration to skip tests, -->
+                    <!-- as command line arguments are ignored. -->
+                    <arguments>-DskipTests</arguments>
+                </configuration>
+            </plugin>
+
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!--
+						<systemProperties>
+						<property>
+						<name>ical4j.unfolding.relaxed</name>
+						<value>true</value>
+						</property>
+						<property>
+						<name>ical4j.parsing.relaxed</name>
+						<value>true</value>
+						</property>
+						</systemProperties>
+					<forkMode>pertest</forkMode>
+					-->
+					<excludes>
+						<exclude>**/CalendarOutputterTest.java</exclude>
+						<exclude>**/Abstract*.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Export-Package>net.fortuna.ical4j.*</Export-Package>
+						<Import-Package>net.fortuna.ical4j.*,org.apache.commons.lang3.*,org.apache.commons.logging,*;resolution:=optional</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+
+			<!--plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clover-plugin</artifactId>
+				<configuration>
+					<jdk>1.4</jdk>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>instrument</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin-->
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>etc/bin-assembly.xml</descriptor>
+						<descriptor>etc/src-assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>site-deploy</phase>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+            <plugin>
+                <groupId>org.codehaus.groovy.maven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.5.8</version>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.3</version>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.8.1</version>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.8</version>
+            <scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.5.8</version>
+            <scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy.maven.runtime</groupId>
+            <artifactId>gmaven-runtime-1.6</artifactId>
+            <version>1.0-rc-5</version>
+            <scope>provided</scope>
+        </dependency>
+	</dependencies>
+
+	
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<linkXref>true</linkXref>
+					<targetJdk>${java.version}</targetJdk>
+                    <rulesets>
+                        <ruleset>http://svn.mnode.org/tools/pmd/mnode_ruleset.xml</ruleset>
+                    </rulesets>
+				</configuration>
+			</plugin>
+
+            <!-- Override default suppressions.. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                   <configLocation>http://svn.mnode.org/tools/checkstyle/mnode_checks.xml</configLocation>
+                   <suppressionsFile>etc/checkstyle-suppressions.xml</suppressionsFile>
+                </configuration>
+            </plugin>
+
+			<plugin>
+				<artifactId>maven-clover-plugin</artifactId>
+				<configuration>
+					<licenseLocation>
+						etc/clover.license
+					</licenseLocation>
+					<excludes>
+						<exclude>**/generated-stubs/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>clirr-maven-plugin</artifactId>
+				<configuration>
+					<minSeverity>info</minSeverity>
+					<comparisonVersion>1.0-rc2</comparisonVersion>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changelog-plugin</artifactId>
+				<reportSets>
+					<reportSet>
+						<id>changelog</id>
+						<configuration>
+							<type>tag</type>
+							<tags>
+								<tag implementation="java.lang.String">
+									ical4j-1_0-rc2
+								</tag>
+								<tag implementation="java.lang.String">
+									ical4j-1_0-rc3
+								</tag>
+							</tags>
+						</configuration>
+						<reports>
+							<report>changelog</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>
